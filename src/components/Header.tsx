@@ -184,7 +184,7 @@ export default function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-xl pt-24 px-6 md:hidden"
+                            className="fixed inset-0 z-40 bg-slate-950 pt-24 px-6 md:hidden"
                         >
                             <nav className="flex flex-col space-y-4">
                                 {NAV_ITEMS.map((item) => {
