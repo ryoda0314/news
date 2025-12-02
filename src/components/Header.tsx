@@ -166,7 +166,7 @@ export default function Header() {
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden relative z-50 p-2 text-slate-300 hover:text-white"
+                    className="md:hidden relative z-[101] p-2 text-slate-300 hover:text-white"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     {isMobileMenuOpen ? (
