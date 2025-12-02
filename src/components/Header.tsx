@@ -4,15 +4,33 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
-import { Zap, Globe } from 'lucide-react';
+import { Zap, Globe, Menu, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languages } from '@/lib/i18n';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
     const pathname = usePathname();
     const { language, setLanguage, t } = useLanguage();
     const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Close mobile menu when route changes
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMobileMenuOpen]);
 
     const NAV_ITEMS = [
         { name: t.navToday, href: '/' },
@@ -26,7 +44,7 @@ export default function Header() {
 
             <div className="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center space-x-3 group">
+                <Link href="/" className="flex items-center space-x-3 group z-50">
                     <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
                         <div className="relative bg-gradient-to-br from-cyan-500 to-purple-500 p-2 rounded-lg">
@@ -43,8 +61,8 @@ export default function Header() {
                     </div>
                 </Link>
 
-                {/* Navigation & Language Selector */}
-                <div className="flex items-center space-x-4">
+                {/* Desktop Navigation & Language Selector */}
+                <div className="hidden md:flex items-center space-x-4">
                     {/* Navigation */}
                     <nav className="flex items-center space-x-2">
                         {NAV_ITEMS.map((item) => {
@@ -145,6 +163,75 @@ export default function Header() {
                         </AnimatePresence>
                     </div>
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden relative z-50 p-2 text-slate-300 hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    {isMobileMenuOpen ? (
+                        <X className="w-6 h-6" />
+                    ) : (
+                        <Menu className="w-6 h-6" />
+                    )}
+                </button>
+
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.2 }}
+                            className="fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-xl pt-24 px-6 md:hidden"
+                        >
+                            <nav className="flex flex-col space-y-4">
+                                {NAV_ITEMS.map((item) => {
+                                    const isActive = pathname === item.href;
+                                    return (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className={clsx(
+                                                'text-2xl font-bold py-4 border-b border-slate-800 transition-colors',
+                                                isActive ? 'text-cyan-400' : 'text-slate-400 hover:text-white'
+                                            )}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    );
+                                })}
+                            </nav>
+
+                            <div className="mt-8">
+                                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+                                    Language
+                                </h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {languages.map((lang) => (
+                                        <button
+                                            key={lang.code}
+                                            onClick={() => {
+                                                setLanguage(lang.code);
+                                                setIsMobileMenuOpen(false);
+                                            }}
+                                            className={clsx(
+                                                'flex items-center space-x-3 px-4 py-3 rounded-xl border transition-all',
+                                                language === lang.code
+                                                    ? 'bg-slate-800 border-cyan-500/50 text-white'
+                                                    : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-white'
+                                            )}
+                                        >
+                                            <span className="text-xl">{lang.flag}</span>
+                                            <span className="font-medium">{lang.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </header>
     );
