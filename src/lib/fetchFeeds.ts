@@ -11,6 +11,11 @@ const FEEDS: FeedConfig[] = [
     { url: 'https://blog.google/technology/ai/rss/', source: 'Google AI Blog', company: 'Google' },
     { url: 'https://feeds.feedburner.com/blogspot/gJZg', source: 'Google Developers Blog', company: 'Google' },
     { url: 'https://blogs.microsoft.com/ai/feed/', source: 'Microsoft AI Blog', company: 'Microsoft' },
+    { url: 'https://huggingface.co/blog/feed.xml', source: 'Hugging Face Blog', company: 'Hugging Face' },
+    { url: 'https://stability.ai/blog?format=rss', source: 'Stability AI Blog', company: 'Stability AI' },
+    { url: 'https://ai.meta.com/blog/rss.xml', source: 'Meta AI Blog', company: 'Meta' },
+    { url: 'https://techcrunch.com/category/artificial-intelligence/feed/', source: 'TechCrunch AI', company: 'TechCrunch' },
+    { url: 'https://www.technologyreview.com/topic/artificial-intelligence/feed', source: 'MIT Tech Review', company: 'MIT' },
 ];
 
 export interface RawNewsItem {
