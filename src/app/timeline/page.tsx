@@ -87,7 +87,7 @@ export default function TimelinePage() {
             <div className="space-y-6">
                 {sortedDates.map(date => (
                     <section key={date} className="space-y-2">
-                        <div className="sticky top-24 z-20 bg-slate-900/95 backdrop-blur-sm py-2 border-b border-slate-800/50">
+                        <div className="sticky top-20 z-20 bg-slate-900/95 backdrop-blur-sm py-2 border-b border-slate-800/50">
                             <h2 className="text-sm font-medium text-slate-400 uppercase tracking-wider">
                                 {format(new Date(date), 'MMMM d, yyyy')}
                             </h2>
